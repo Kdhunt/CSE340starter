@@ -172,6 +172,9 @@ body #wrapper section{
   margin: 1.5rem auto;
   height: 85px;
 }
+#inv-display li{
+  list-style: none;
+}
 
 @media only screen and (min-width: 800px) {
   body #wrapper {
