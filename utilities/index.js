@@ -22,7 +22,7 @@ Util.getNav = async function (req, res, next) {
   })
   list += "</ul>"
   return list
-}
+};
 
 /* **************************************
 * Build the classification view HTML
@@ -55,6 +55,42 @@ Util.buildClassificationGrid = async function(data){
       grid += '<p class="notice">Sorry, no matching vehicles could be found.</p>'
     }
     return grid
-  }
+  };
+
+  /**************************************
+   * Build Single Vehicle Inventory Block
+   **************************************/
+  Util.buildSingleInventoryBlock = async function(data){
+    let block
+    vehicle = data[0]
+    if (data.length>0){
+        block ='<div id="vehicle-layout" class="single-vehicle-view">'
+        //block += '<section id="vehicle-cta">'
+        //block += '    <img id="vehicle-image" src="'+ vehicle.inv_image+'" alt="'+ vehicle.inv_description +'">'
+        //block += '    '
+        //block += '</section>'
+        block += '<div id="details">'
+        block += '<section id="reviews" class="vehicle-detail">'
+        block += '    <img id="vehicle-image" src="'+ vehicle.inv_image+'" alt="'+ vehicle.inv_description +'">'
+        block += '</section>'
+        block += '<section id="reviews" class="vehicle-detail">'
+        block += '        <h2>'+vehicle.inv_make+' '+vehicle.inv_model+' Details</h2>  '
+        block += '        <p><b>Price: </b>' +vehicle.inv_price+ '</p>'
+        block += '        <p><b>Description: </b>' +vehicle.inv_description+ '</p>'
+        block += '</section>'
+
+        block+='</div>'
+    } else {
+      block += '<p class="notice">Sorry, we were unable to find this vehicle in our inventory.</p>'
+    }
+    return block
+  };
+
+/* ****************************************
+ * Middleware For Handling Errors
+ * Wrap other function in this for 
+ * General Error Handling
+ **************************************** */
+Util.handleErrors = fn => (req, res, next) => Promise.resolve(fn(req, res, next)).catch(next)
 
 module.exports = Util
