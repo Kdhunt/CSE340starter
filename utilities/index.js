@@ -89,6 +89,11 @@ Util.buildClassificationGrid = async function(data){
     return block
   };
 
+  Util.makeItBorkened = async function(){
+     throw new Error('divide by zero!'); 
+     return 1 / 0;
+  }
+
 /* ****************************************
  * Middleware For Handling Errors
  * Wrap other function in this for 
