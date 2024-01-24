@@ -35,6 +35,7 @@ h1{
 }
 h2{
   font-size: x-large;
+  margin: 5px 5px 15px 
 }
 h3{
   font-size: large;
@@ -58,7 +59,11 @@ li{
   margin-bottom: 2rem;
   
 }
-
+hr{
+  height: 5px;
+  background: var(--blue);
+  border: none;
+}
 /** HEADER**/
 header {
   display: grid;
@@ -172,8 +177,34 @@ body #wrapper section{
   margin: 1.5rem auto;
   height: 85px;
 }
+ul#inv-display{
+  display: flex;
+  flex-flow: row;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
 #inv-display li{
   list-style: none;
+  max-width: 30%;
+  overflow: hidden;
+  text-align: center;
+  border: 2px solid var(--black);
+  padding: 5px;
+}
+#inv-display li img{
+height:45%;
+min-width: 100%;
+}
+
+#inv-display li::after {
+    content: "";
+    display: block;
+    position: absolute;
+    height: 100%;
+    width: 5px;
+    background-color: var(--white);
+    top: 0px;
+    right: 0px;
 }
 
 @media only screen and (min-width: 800px) {

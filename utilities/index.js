@@ -71,11 +71,14 @@ Util.buildClassificationGrid = async function(data){
         //block += '</section>'
         block += '<div id="details">'
         block += '<section id="reviews" class="vehicle-detail">'
-        block += '    <img id="vehicle-image" src="'+ vehicle.inv_image+'" alt="'+ vehicle.inv_description +'">'
+        block += '    <img id="vehicle-image" src="'+ vehicle.inv_image
+        +'" alt="Image of '+ vehicle.inv_make + ' ' + vehicle.inv_model 
+        +' on CSE Motors">'
         block += '</section>'
         block += '<section id="reviews" class="vehicle-detail">'
         block += '        <h2>'+vehicle.inv_make+' '+vehicle.inv_model+' Details</h2>  '
-        block += '        <p><b>Price: </b>' +vehicle.inv_price+ '</p>'
+        block += '        <p><b>Price: </b>$' +new Intl.NumberFormat('en-US').format(vehicle.inv_price)+ '</p>'
+        block += '        <p><b>Milage: </b>' +new Intl.NumberFormat('en-US').format(vehicle.inv_miles)+ '</p>'
         block += '        <p><b>Description: </b>' +vehicle.inv_description+ '</p>'
         block += '</section>'
 
