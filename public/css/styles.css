@@ -179,17 +179,20 @@ body #wrapper section{
 }
 ul#inv-display{
   display: flex;
-  flex-flow: row;
-  justify-content: space-between;
+  flex-flow: column;
+  justify-content: space-evenly;
   flex-wrap: wrap;
+  align-content: center;
 }
 #inv-display li{
   list-style: none;
   max-width: 30%;
+  min-width: 200px;
   overflow: hidden;
   text-align: center;
   border: 2px solid var(--black);
   padding: 5px;
+ 
 }
 #inv-display li img{
 height:45%;
@@ -232,5 +235,8 @@ min-width: 100%;
   }
   .single-vehicle-view #details #vehicle-image{
     max-width: 100%;
+  }
+  ul#inv-display{
+    flex-flow: wrap;
   }
 }
