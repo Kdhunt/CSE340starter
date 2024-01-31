@@ -1,0 +1,45 @@
+<% if (title) { %>
+    <h1><%= title %></h1>
+    <% } else {
+      res.redirect('/')
+    } %>
+
+    <%# messages() %>
+    <% if (errors) { %>
+        <ul class="notice">
+       <% errors.array().forEach(error => { %>
+         <li><%= error.msg %></li>
+      <%  }) %>
+       </ul>
+      <% } %>
+      
+    <div id="login">
+        <form id="loginForm" action="/account/login" method="post">
+        <div class="form-wrapper">
+          <div class="form-header">
+            &nbsp;
+          </div>
+          <div class="form-content">
+            <div class="form-element">
+                <label>
+                    <span>Email:</span>
+                    <input aria-label="account email" type="email" name="account_email" required aria-required="true" value="<%= locals.account_email %>">
+                </label>
+            </div>
+            <div class="form-element">
+                <span class="tool-tip">Password must be at least 12 characters long and contain 1 capital, 1 number, and 1 special character.</span>
+                <label>
+                    <span>Password:</span>
+                    <input aria-label="password" type="password" name="account_password" required aria-required="true"  pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{12,}$">
+                </label>
+            </div>
+            <div class="form-submit">
+                <input class="submitButton" type="button" name="submit" value="Submit">
+            </div>
+          </div>
+          <div class="form-footer">
+            <span>Need and Account? <a href="/account/register">Sign up.</a></span>
+          </div>
+        </div>
+        </form>
+      </div>

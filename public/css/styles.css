@@ -3,6 +3,7 @@
 :root {
   --rem: 16;
   --blue: rgb(59, 112, 227);
+  --red: #992255;
   --white: #ffffff;
   --white-alpha: rgba(255,255,255,.8);
   --black: #020202;
@@ -126,6 +127,105 @@ body #wrapper{
 body #wrapper section{
   text-align: left;
 }
+/*** Forms  ***/
+
+.form-wrapper{
+  margin: 8% auto;
+  min-height: 60%;
+  width: 75%;
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.6);
+  background: white;
+  padding: 5px 15px;
+  box-sizing: border-box;
+  border-radius: 8px;
+}
+.form-header{
+  text-align: center;
+}
+.form-footer{
+  text-align: left;
+  font-size: smaller;
+  margin-top: 16px;
+}
+.form-content{
+  margin-top: 5%;
+}
+.form-element{
+  display: block;
+  text-align: left;
+  margin: 0px 0px 15px 20px;
+  padding: 4px;
+  height: 5%;
+  box-sizing: border-box;
+  border: none;
+  outline: none;
+  font-size: medium;
+}
+.form-element label span:first-child{
+  padding-bottom: 5px;
+}
+.form-element span{
+  display: block;
+    width: inherit;
+    min-width: 30%;
+}
+.form-element input{
+  width: -webkit-fill-available;
+  max-width: 85%;
+  font-size: medium;
+  padding: 2px;
+}
+.form-element select, .form-element textarea{
+  width: -webkit-fill-available;
+  max-width: 85%;
+  font-size: medium;
+  padding: 2px;
+  border: 2px inset var(--black);
+}
+.form-element textarea{
+  text-align: left;
+  vertical-align: text-top;
+
+}
+
+#submitButton {
+    background: var(--blue);
+    color: var(--white);
+    padding: 4px 12px;
+    width: 80%;
+    height: 8%;
+    border: none;
+    border-radius: 4px;
+    text-transform: uppercase;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: large;
+}
+.form-element span.required, .tip{
+  min-width: unset;
+  color: var(--red);
+  font-size: x-small;
+  display: inline-block;
+  text-align: right;
+  width: auto;
+}
+
+input:required:invalid, input:focus:invalid {
+  background-color: rgb(210, 154, 154);
+ }
+ input:required:valid {
+  background-color: rgb(137, 186, 137);
+ }
+.tool-tip{
+  font-size: x-small;
+}
+#showpw{
+  position: absolute;
+  right: -19%;
+    top: calc(50% - -1px);
+}
+/*** Home Page  ***/
+
 #vehicle-cta img{
   width: 100%;
 }
@@ -177,19 +277,24 @@ body #wrapper section{
   margin: 1.5rem auto;
   height: 85px;
 }
+
+/*** Inventory Detail Page  ***/
 ul#inv-display{
   display: flex;
-  flex-flow: row;
-  justify-content: space-between;
+  flex-flow: column;
+  justify-content: space-evenly;
   flex-wrap: wrap;
+  align-content: center;
 }
 #inv-display li{
   list-style: none;
   max-width: 30%;
+  min-width: 200px;
   overflow: hidden;
   text-align: center;
   border: 2px solid var(--black);
   padding: 5px;
+ 
 }
 #inv-display li img{
 height:45%;
@@ -207,6 +312,12 @@ min-width: 100%;
     right: 0px;
 }
 
+/*** LOGIN PAGE  ***/
+
+
+/*  REGSTRATION PAGE */
+
+/*** media > 800px wide  ***/
 @media only screen and (min-width: 800px) {
   body #wrapper {
     max-width: 800px;
@@ -232,5 +343,20 @@ min-width: 100%;
   }
   .single-vehicle-view #details #vehicle-image{
     max-width: 100%;
+  }
+  ul#inv-display{
+    flex-flow: wrap;
+  }
+  .form-element span{
+    display: inline-block;
+  }
+  .form-element input,  .form-element select, .form-element textarea{
+    max-width: 65%;
+  }
+ 
+  #showpw{
+    position: absolute;
+    right: -24%;
+    top: calc(50% - 9px);
   }
 }

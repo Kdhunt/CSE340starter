@@ -1,0 +1,58 @@
+<% if (title) { %>
+    <h1><%= title %></h1>
+    <% } else {
+      res.redirect('/')
+    } %>
+
+    <%- messages() %>
+    <% if (errors) { %>
+      <ul class="notice">
+     <% errors.array().forEach(error => { %>
+       <li><%= error.msg %></li>
+    <%  }) %>
+     </ul>
+    <% } %>
+
+    <div id="register">
+      <form id="regForm" action="/account/register" method="post">
+      <div class="form-wrapper">
+        <div class="form-header">
+          <h2>Register</h2>
+        </div>
+        <div class="form-content">
+          <span class="tip">* Required</span>
+          <div class="form-element">
+            <label>
+                <span>First Name:</span><span class="required">*</span>
+                <input aria-label="First Name" type="text" name="account_firstname" required aria-required="true" value="<%= locals.account_firstname %>" pattern="[A-Za-z ]{3,20}">
+            </label>
+        </div>
+        <div class="form-element">
+          <label>
+              <span>Last Name:</span><span class="required">*</span>
+              <input aria-label="last name" type="text" name="account_lastname"  required aria-required="true" value="<%= locals.account_lastname %>" pattern="[A-Za-z ]{3,20}">
+          </label>
+      </div>
+          <div class="form-element">
+            <span class="tool-tip">Password must be at least 12 characters long and contain 1 capital, 1 number, and 1 special character.</span>
+              <label>
+                  <span>Email:</span><span class="required">*</span>
+                  <input aria-label="account email" type="email" name="account_email"  required aria-required="true" placeholder="Enter a valid email address" value="<%= locals.account_email %>" pattern="[a-zA-Z0-9.]{2,46}@[a-zA-Z0-9.]{2,46}.\w">
+              </label>
+          </div>
+          <div class="form-element">
+              <label>
+                  <span>Password:</span><span class="required">*</span>
+                  <input id="password1" aria-label="password" type="password" name="account_password" pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{12,}$" required aria-required="true"><span id="showpw">&#128065;</span>
+              </label>
+          </div>
+          <div class="form-submit">
+              <input id="submitButton" type="submit" name="submit" value="Register">
+          </div>
+        </div>
+        <div class="form-footer">
+          
+        </div>
+      </div>
+      </form>
+    </div>
