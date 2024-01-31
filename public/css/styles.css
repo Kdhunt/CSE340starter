@@ -344,19 +344,4 @@ min-width: 100%;
   .single-vehicle-view #details #vehicle-image{
     max-width: 100%;
   }
-  ul#inv-display{
-    flex-flow: wrap;
-  }
-  .form-element span{
-    display: inline-block;
-  }
-  .form-element input,  .form-element select, .form-element textarea{
-    max-width: 65%;
-  }
- 
-  #showpw{
-    position: absolute;
-    right: -24%;
-    top: calc(50% - 9px);
-  }
 }
