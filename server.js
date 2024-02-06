@@ -18,6 +18,7 @@ const utilities = require("./utilities/")
 const session = require("express-session")
 const bodyParser = require("body-parser")
 const pool = require('./database/')
+const cookieParser = require("cookie-parser")
 
 
 
@@ -43,6 +44,8 @@ app.use(function(req, res, next){
   res.locals.messages = require('express-messages')(req, res)
   next()
 })
+app.use(cookieParser())
+app.use(utilities.checkJWTToken)
 
 /* ***********************
  * View Engine and Templates
@@ -60,7 +63,7 @@ app.use(static)
 //app.get("/", function(req,res){
 //  res.render("index", {title:"Home"})
 //})
-app.use(static);
+app.use(static)
 app.get("/", utilities.handleErrors(baseController.buildHome))
 app.use("/inv", utilities.handleErrors(inventoryRoute))
 app.use("/account", utilities.handleErrors(accountRoute))

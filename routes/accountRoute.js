@@ -8,8 +8,9 @@ const utilities = require("../utilities")
 // Route to build inventory by classification view
 
 router.get("/login", utilities.handleErrors(accountController.buildLogin));
-router.get("/profile", utilities.handleErrors(accountController.buildProfile));
+router.get("/", utilities.checkLogin, utilities.handleErrors(accountController.accountManagement))
 router.get("/register", utilities.handleErrors(accountController.buildSignup));
+
 // Process the registration data
 router.post(
   "/register",
@@ -19,11 +20,11 @@ router.post(
 );
 
 // Process the login attempt
-router.post(
+  router.post(
     "/login",
     regValidate.loginRules(),
     regValidate.checkLoginData,
-    utilities.handleErrors(accountController.loginAccount)
+    utilities.handleErrors(accountController.accountLogin)
   )
 
 module.exports = router;

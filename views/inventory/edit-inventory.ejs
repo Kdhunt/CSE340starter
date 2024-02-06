@@ -4,14 +4,21 @@
       res.redirect('/')
     } %>
 
-
-
+    <%- messages() %>
+    <% if (errors) { %>
+      <ul class="notice">
+     <% errors.array().forEach(error => { %>
+       <li><%= error.msg %></li>
+    <%  }) %>
+     </ul>
+    <% } %>
 
     <div id="register">
-        <form id="regForm" action="/inv/addVehicle" method="post">
+      <form action="/inv/update" method="post">
         <div class="form-wrapper">
           <div class="form-header">
-            <h2>Add Vehicle</h2>
+            <h2>Update Vehicle</h2>
+            
           </div>
           <div class="form-content">
             <span class="tip">* Required</span>
@@ -28,7 +35,7 @@
             <div class="form-element">
               <label>
                   <span>Make:</span><span class="required">*</span>
-                  <input aria-label="Vehicle Make" type="text" name="inv_make" required aria-required="true" value="<%= locals.inv_make %>" pattern="[A-Za-z ]{3,20}">
+                  <input aria-label="Vehicle Make" type="text" name="inv_make" required aria-required="true" value="<%= locals.inv_make %>" pattern="[A-Za-z ]{3,20}" >
               </label>
             </div>
 
@@ -56,14 +63,14 @@
             <div class="form-element">
               <label>
                   <span>Image:</span><span class="required">*</span>
-                  <input aria-label="Vehicle Image file" type="text" name="inv_image" required aria-required="true" value="/images/vehicles/no-image.jpg">
+                  <input aria-label="Vehicle Image file" type="text" name="inv_image" required aria-required="true" value="<%= locals.inv_image %>">
               </label>
             </div>
 
             <div class="form-element">
               <label>
                   <span>Thumbnail:</span><span class="required">*</span>
-                  <input aria-label="Vehicle Thumbnail" type="text" name="inv_thumbnail" required aria-required="true" value="/images/vehicles/no-image-tn.jpg">
+                  <input aria-label="Vehicle Thumbnail" type="text" name="inv_thumbnail" required aria-required="true" value="<%= locals.inv_thumbnail %>">
               </label>
             </div>
 
@@ -89,11 +96,13 @@
             </div>
 
             <div class="form-submit">
-                <input id="submitButton" type="submit" name="submit" value="Submit">
+                <input id="submitButton" type="submit" name="submit" value="Update Vehicle">
             </div>
           </div>
           <div class="form-footer">
-            
+            <input type="hidden" name="inv_id"
+            <% if(locals.inv_id) { %> value="<%= locals.inv_id %>"
+            <% } %>>
           </div>
         </div>
         </form>

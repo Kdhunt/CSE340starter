@@ -100,4 +100,40 @@ validate.checkAddVehicleData = async (req, res, next) => {
     next()
 }
 
+
+validate.checkUpdateVehicleData = async (req, res, next) => {
+  const {  inv_make, inv_model, inv_year, inv_description, inv_image, inv_thumbnail, inv_price, inv_miles, inv_color, classification_id, inv_id } = req.body
+  let errors = []
+  errors = validationResult(req)
+  if (!errors.isEmpty()) {
+    let nav = await utilities.getNav()
+    const classificationSelect = await utilities.buildClassificationSelect(classification_id);
+    res.render("./inventory/edit-inventory", {
+      errors,
+      title: "Add Vehicle",
+      nav,
+      classificationSelect,
+      inv_make, 
+      inv_model, 
+      inv_year, 
+      inv_description, 
+      inv_image, 
+      inv_thumbnail, 
+      inv_price, 
+      inv_miles, 
+      inv_color,
+      classification_id,
+      inv_id
+    })
+    return
+  }
+  next()
+}
+
+validate.deleteVehicleRules= ()=>{
+  return [
+
+  ]}
+validate.checkDeleteVehicleData,
+
 module.exports = validate

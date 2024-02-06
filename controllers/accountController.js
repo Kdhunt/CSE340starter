@@ -1,6 +1,8 @@
 const accountModel = require("../models/accountModel")
 const utilities = require("../utilities/")
 const bcrypt = require("bcryptjs")
+const jwt = require("jsonwebtoken")
+require("dotenv").config()
 
 const accountCont = {}
 
@@ -16,7 +18,7 @@ accountCont.buildLogin = async function (req, res, next) {
     })
   }
 /* ****************************************
-*  Deliver login view
+*  Deliver registration view
 * *************************************** */
 accountCont.buildSignup = async function (req, res, next) {
     let nav = await utilities.getNav()
@@ -29,19 +31,17 @@ accountCont.buildSignup = async function (req, res, next) {
 
 
 /* ***************************
- *  Build profile 
+ *  Account Management
  * ************************** */
-accountCont.buildProfile = async function (req, res, next) {
-    const account_id = req.params.accountId
-    const data = await accountModel.getAccountById(account_id)
-    const value = await utilities.buildAccountProfileByAccountId(data);
+accountCont.accountManagement = async function (req, res, next) {
+    //const account_id = req.params.accountId
+    //const data = await accountModel.getAccountById(account_id)
     let nav = await utilities.getNav()
-    const className = data[0].inv_year +" "+ data[0].inv_make +" "+ data[0].inv_model
-    res.render("account/profile", {
-      title: className,
+    
+    res.render("account/management", {
+      title: "Account Management",
       nav,
       errors: null,
-      block,
     })
   }
 
@@ -92,45 +92,33 @@ accountCont.registerAccount = async function(req, res, next){
   }
 }
 
-  /*****
-   * Account Login
-   */
-  accountCont.login = async function(req, res, next){
+  /* ****************************************
+ *  Process login request
+ * ************************************ */
+accountCont.accountLogin = async function (req, res) {
     let nav = await utilities.getNav()
-  const {account_email, account_password } = req.body
-  try {
-  hashedPassword = await bcrypt.hashSync(account_password, 10)
+    const { account_email, account_password } = req.body
+    const accountData = await accountModel.getAccountByEmail(account_email)
+    if (!accountData) {
+     req.flash("notice", "Please check your credentials and try again.")
+     res.status(400).render("account/login", {
+      title: "Login",
+      nav,
+      errors: null,
+      account_email,
+     })
+    return
+    }
+    try {
+     if (await bcrypt.compare(account_password, accountData.account_password)) {
+     delete accountData.account_password
+     const accessToken = jwt.sign(accountData, process.env.ACCESS_TOKEN_SECRET, { expiresIn: 3600 * 1000 })
+     res.cookie("jwt", accessToken, { httpOnly: true, maxAge: 3600 * 1000 })
+     return res.redirect("/account/")
+     }
     } catch (error) {
-    req.flash("notice", 'Sorry, there was an error processing the login.')
-    res.status(500).render("account/login", {
-    title: "Login",
-    nav,
-    errors: null,
-})
-}
-  const regResult = await accountModel.loginAccount(
-    account_email,
-    hashedPassword
-  )
-
-  if (regResult) {
-    req.flash(
-      "notice",
-      `Congratulations, ${account_firstname}, you are logged in. P.`
-    )
-    res.status(201).render("account/login", {
-      title: "Login",
-      nav,
-      errors: null,
-    })
-  } else {
-    req.flash("notice", "Sorry, the login failed.")
-    res.status(501).render("account/login", {
-      title: "Login",
-      nav,
-      errors: null,
-    })
-  }
-}
+     return new Error('Access Forbidden')
+    }
+   }
 
 module.exports = accountCont
