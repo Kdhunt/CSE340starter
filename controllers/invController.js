@@ -38,31 +38,8 @@ invCont.buildByInvId = async function (req, res, next) {
   })
 }
 
-invCont.buildManagement = async function (req, res, next){
-  let nav = await utilities.getNav()
 
-  const classificationSelect = await utilities.buildClassificationSelect()
 
-  res.render("./inventory/management", {
-    title: "Vehicle Management",
-    nav,
-    errors: null,
-    classificationSelect
-
-  })
-
-}
-invCont.buildAddVehicle = async function (req, res, next){
-  let nav = await utilities.getNav();
-  const classificationSelect = await utilities.buildClassificationSelect();
-  
-  res.render("./inventory/add-vehicle", {
-    title: "Add Vehicle",
-    nav,
-    errors: null,
-    classificationSelect
-  })
-}
 
 invCont.buildAddClassification = async function (req, res, next){
   let nav = await utilities.getNav()
@@ -100,6 +77,33 @@ if (invResult) {
     errors: null,
   })
 }
+}
+
+invCont.buildManagement = async function (req, res, next){
+  let nav = await utilities.getNav()
+
+  const classificationSelect = await utilities.buildClassificationSelect()
+
+  res.render("./inventory/management", {
+    title: "Vehicle Management",
+    nav,
+    errors: null,
+    classificationSelect
+
+  })
+
+}
+
+invCont.buildAddVehicle = async function (req, res, next){
+  let nav = await utilities.getNav();
+  const classificationSelect = await utilities.buildClassificationSelect();
+  
+  res.render("./inventory/add-vehicle", {
+    title: "Add Vehicle",
+    nav,
+    errors: null,
+    classificationSelect
+  })
 }
 /*** Add Vehicle */
 invCont.addVehicle = async function(req, res, next){

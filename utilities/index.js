@@ -150,12 +150,75 @@ Util.checkJWTToken = (req, res, next) => {
  *  Check Login
  * ************************************ */
  Util.checkLogin = (req, res, next) => {
-  if (res.locals.loggedin) {
+  if (res.
+    locals.loggedin) {
     next()
   } else {
     req.flash("notice", "Please log in.")
     return res.redirect("/account/login")
   }
  }
+
+  /* ****************************************
+ *  Check Account Type   'Client', 'Employee', 'Admin'
+ * ************************************ */
+  Util.checkAccountType = (req, res, next) => {
+    if (res.locals.accountData) {
+      if(res.locals.accountData.account_type == "Employee" || res.locals.accountData.account_type == "Admin") next()
+    } else {
+      req.flash("notice", "You are not authorized to access this page")
+      return res.redirect("/")
+    }
+   }
+
+   /* ****************************************
+ *  Check Account Type Employee  'Client', 'Employee', 'Admin'
+ * ************************************ */
+  /*Util.checkEmployee = (req, res, next) => {
+    if (res.locals.accountData) {
+      if(res.locals.accountData.account_type == "Employee"){
+        next() 
+      } else {
+      req.flash("notice", "You are not authorized to access that page")
+      return res.redirect("/error")
+      }
+    }else{
+      return res.redirect("/logout")
+    }
+   }*/
+    /* ****************************************
+ *  Check Account Type Admin  'Client', 'Employee', 'Admin'
+ * ************************************ */
+ /* Util.checkAdmin = (req, res, next) => {
+    if (res.locals.accountData) {
+      if(res.locals.accountData.account_type == "Admin"){
+        next() 
+      } else {
+      req.flash("notice", "You are not authorized to access that page")
+      return res.redirect("/error")
+      }
+    }else{
+      return res.redirect("/logout")
+    }
+   }*/
+
+     /* ****************************************
+ *  Check Account Type   'Client', 'Employee', 'Admin'
+ * ************************************ */
+  Util.checkAccountUpdateAccess = (req, res, next) => {
+    if (res.locals.accountData) {
+      if(res.locals.accountData.account_type == "Employee" || res.locals.accountData.account_type == "Admin"){
+        next()
+      }else{
+        if(res.locals.account_id != res.locals.accountData.account_id){
+          req.flash("notice", "You are not authorized to access this page")
+      return res.redirect("/")
+        }
+      }
+    } else {
+      req.flash("notice", "You are not authorized to access this page")
+      return res.redirect("/")
+    }
+   }
 
 module.exports = Util

@@ -121,4 +121,187 @@ accountCont.accountLogin = async function (req, res) {
     }
    }
 
+   /* ***************************
+ *  Return Accounts As JSON
+ * ************************** */
+   accountCont.getAccountJSON = async (req, res, next) => {
+  
+  const accountData = await accountModel.getAccounts()
+  if (accountData[0].account_id) {
+    return res.json(accountData)
+  } else {
+    next(new Error("No data returned"))
+  }
+}
+
+accountCont.buildAddAccount = async function (req, res, next) {
+  let nav = await utilities.getNav();
+
+  res.render("./account/add-account", {
+    title: "Add Account",
+    nav,
+    errors: null,
+  });
+};
+
+accountCont.addAccount = async function (req, res, next) {
+  let nav = await utilities.getNav();
+  const { account_firstname, account_lastname, account_email, account_password, account_type } = req.body;
+
+  const accResult = await accountModel.addAccount(
+    account_firstname,
+    account_lastname,
+    account_email,
+    account_password,
+    account_type
+  );
+
+  if (accResult) {
+    req.flash("notice", "Account Added Successfully.");
+    res.redirect("/account/addAccount");
+  } else {
+    req.flash("notice", "Sorry, adding the Account failed.");
+    res.render("./account/add-account", {
+      title: "Add Account",
+      nav,
+      errors: null,
+    });
+  }
+};
+
+accountCont.buildEditAccount = async function (req, res, next) {
+  const account_id = parseInt(req.params.accountId);
+  let nav = await utilities.getNav();
+  const data = await accountModel.getAccountById(account_id);
+  const accountData = data[0];
+
+  res.render("./account/edit-account", {
+    title: "Edit Account",
+    nav,
+    errors: null,
+    account_id: accountData.account_id,
+    account_firstname: accountData.account_firstname,
+    account_lastname: accountData.account_lastname,
+    account_email: accountData.account_email
+  });
+};
+
+accountCont.updateAccount = async function (req, res, next) {
+  let nav = await utilities.getNav();
+  const {
+    account_id,
+    account_firstname,
+    account_lastname,
+    account_email,
+  } = req.body;
+
+  const updateResult = await accountModel.updateAccount(
+    account_id,
+    account_firstname,
+    account_lastname,
+    account_email,
+  );
+
+  if (updateResult) {
+    req.flash("notice", "Account Updated Successfully.");
+    res.redirect("/account/");
+  } else {
+    req.flash("notice", "Sorry, the update failed.");
+    res.render("./account/edit-account", {
+      title: "Edit Account",
+      nav,
+      errors: null,
+      account_id,
+      account_firstname,
+      account_lastname,
+      account_email
+    });
+  }
+};
+
+accountCont.updateAccountPassword = async function (req, res, next) {
+  let nav = await utilities.getNav();
+  const {
+    account_id,
+    account_password,
+  } = req.body;
+
+  // Hash the password before storing
+  let hashedPassword
+  try {
+  // regular password and cost (salt is generated automatically)
+  hashedPassword = await bcrypt.hashSync(account_password, 10)
+  } catch (error) {
+  req.flash("notice", 'Sorry, there was an error processing the registration.')
+  res.status(500).render("account/register", {
+      title: "Registration",
+      nav,
+      errors: null,
+  })
+  }
+  const updateResult = await accountModel.updateAccountPassword(
+    account_id,
+    hashedPassword,
+  );
+
+  if (updateResult) {
+    req.flash("notice", "Password Updated Successfully.");
+    res.redirect("/account/");
+  } else {
+    req.flash("notice", "Sorry, the update failed.");
+    res.render("./account/edit-account", {
+      title: "Edit Account",
+      nav,
+      errors: null,
+      account_id,
+      account_firstname: updateResult.account_firstname,
+      account_lastname: updateResult.account_lastname,
+      account_email: updateResult.account_email,
+    });
+  }
+};
+
+accountCont.buildDeleteAccount = async function (req, res, next) {
+  const account_id = parseInt(req.params.accountId);
+  let nav = await utilities.getNav();
+  const data = await accountModel.getAccountById(account_id);
+  const accountData = data[0];
+
+  res.render("./account/delete-account", {
+    title: "Delete Account",
+    nav,
+    errors: null,
+    account_id: accountData.account_id,
+    account_firstname: accountData.account_firstname,
+    account_lastname: accountData.account_lastname,
+    account_type: accountData.account_type,
+  });
+};
+
+accountCont.deleteAccount = async function (req, res, next) {
+  const { account_id } = req.body;
+  let nav = await utilities.getNav();
+  const data = await accountModel.getAccountById(account_id);
+  const accountData = data[0];
+
+  const deleteResult = await accountModel.deleteAccount(account_id);
+
+  if (deleteResult) {
+    req.flash("notice", "Account Deleted Successfully.");
+    res.redirect("/account/");
+  } else {
+    req.flash("notice", "Sorry, the delete failed.");
+    res.render("./account/delete-account", {
+      title: "Delete Account",
+      nav,
+      errors: null,
+      account_id,
+      account_firstname: accountData.account_firstname,
+      account_lastname: accountData.account_lastname,
+      account_type: accountData.account_type,
+    });
+  }
+};
+
+
 module.exports = accountCont

@@ -1,0 +1,68 @@
+<% if (title) { %>
+  <h1><%= title %></h1>
+<% } else {
+  res.redirect('/')
+} %>
+
+<div id="register">
+  <form id="regForm" action="/account/register" method="post">
+    <div class="form-wrapper">
+      <div class="form-header">
+        <h2>Register Account</h2>
+      </div>
+      <div class="form-content">
+        <span class="tip">* Required</span>
+
+        <div class="form-element">
+          <label>
+            <span>First Name:</span><span class="required">*</span>
+            <input aria-label="First Name" type="text" name="account_firstname" required aria-required="true" pattern="[A-Za-z ]{3,50}">
+          </label>
+        </div>
+
+        <div class="form-element">
+          <label>
+            <span>Last Name:</span><span class="required">*</span>
+            <input aria-label="Last Name" type="text" name="account_lastname" required aria-required="true" pattern="[A-Za-z ]{3,50}">
+          </label>
+        </div>
+
+        <div class="form-element">
+          <label>
+            <span>Email:</span><span class="required">*</span>
+            <input aria-label="Email" type="email" name="account_email" required aria-required="true">
+          </label>
+        </div>
+
+        <div class="form-element">
+          <label>
+            <span>Password:</span><span class="required">*</span>
+            <input aria-label="Password" type="password" name="account_password" required aria-required="true">
+          </label>
+        </div>
+
+        <div class="form-element">
+          <label>
+            <span>Account Type:</span><span class="required">*</span>
+            <!-- You can create a dropdown or radio buttons for account type selection -->
+            <!-- For example, a dropdown -->
+            <select aria-label="Account Type" name="account_type" required aria-required="true">
+              <option value="client">Client</option>
+              <option value="manager">Manager</option>
+              <option value="admin">Admin</option>
+            </select>
+          </label>
+        </div>
+
+        <!-- Add any other fields as needed -->
+
+        <div class="form-submit">
+          <input id="submitButton" type="submit" name="submit" value="Register">
+        </div>
+      </div>
+      <div class="form-footer">
+        <!-- Add any additional content or links here -->
+      </div>
+    </div>
+  </form>
+</div>
