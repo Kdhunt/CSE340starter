@@ -47,30 +47,6 @@ app.use(function(req, res, next){
 app.use(cookieParser())
 app.use(utilities.checkJWTToken)
 
-/****COOKIE MIDDLEWARE */
-
-//JSON object to be added to cookie 
-let user = { 
-  name : "Ritik", 
-  Age : "18"
-  } 
-    
-  //Route for adding cookie 
-  app.get('/setuser', (req, res)=>{ 
-  res.cookie("userData", user); 
-  res.send('user data added to cookie'); 
-  }); 
-    
-  //Iterate users data from cookie 
-  app.get('/getuser', (req, res)=>{ 
-  //shows all the cookies 
-  res.send(req.cookies); 
-  }); 
-  app.get('/logout', (req, res)=>{ 
-    //it will clear the userData cookie 
-    res.clearCookie('userData'); 
-    res.send('user logout successfully'); 
-  }); 
 
 
 /* ***********************
@@ -94,6 +70,11 @@ app.get("/", utilities.handleErrors(baseController.buildHome))
 app.use("/inv", utilities.handleErrors(inventoryRoute))
 app.use("/account", utilities.handleErrors(accountRoute))
 app.use("/borkened", utilities.handleErrors(errorRoute))
+app.use('/logout', (req, res)=>{ 
+  //req.flash("Please log in")
+  res.clearCookie("jwt")
+  return res.redirect("/account/login")
+}); 
 
 
 // File Not Found Route - must be last route in list
