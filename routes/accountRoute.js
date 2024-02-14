@@ -52,7 +52,7 @@ router.post(
 router.post(
   "/updatePassword",
   utilities.checkLogin, 
-  //utilities.checkAccountUpdateAccess,
+  utilities.checkAccountUpdateAccess,
   regValidate.changePasswordRules(),
   regValidate.checkResetPasswordData,
   utilities.handleErrors(accountController.updateAccountPassword)

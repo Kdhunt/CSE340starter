@@ -1,4 +1,5 @@
 const accountModel = require("../models/accountModel")
+const reviewModel = require("../models/reviewModel")
 const utilities = require("../utilities/")
 const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
@@ -34,14 +35,15 @@ accountCont.buildSignup = async function (req, res, next) {
  *  Account Management
  * ************************** */
 accountCont.accountManagement = async function (req, res, next) {
-    //const account_id = req.params.accountId
+    const account_id = parseInt(res.locals.accountData.account_id);
     //const data = await accountModel.getAccountById(account_id)
     let nav = await utilities.getNav()
-    
+    const reviews = await reviewModel.getReviewByAccountId(account_id) 
     res.render("account/management", {
       title: "Account Management",
       nav,
       errors: null,
+      reviews
     })
   }
 
@@ -114,7 +116,13 @@ accountCont.accountLogin = async function (req, res) {
      delete accountData.account_password
      const accessToken = jwt.sign(accountData, process.env.ACCESS_TOKEN_SECRET, { expiresIn: 3600 * 1000 })
      res.cookie("jwt", accessToken, { httpOnly: true, maxAge: 3600 * 1000 })
-     return res.redirect("/account/")
+     const returnUrl = req.session.returnTo || '/';
+     //delete req.session.returnTo; // Clear the stored URL after redirection
+     res.redirect(returnUrl);
+     //return res.redirect("/account/")
+     }else{
+      req.flash("notice", 'Login Failed')
+      res.redirect("/account/login/")
      }
     } catch (error) {
      return new Error('Access Forbidden')

@@ -345,3 +345,12 @@ WITH (OIDS=FALSE);
 ALTER TABLE "session" ADD CONSTRAINT "session_pkey" PRIMARY KEY ("sid") NOT DEFERRABLE INITIALLY IMMEDIATE;
 
 CREATE INDEX "IDX_session_expire" ON "session" ("expire");
+
+
+CREATE TABLE review (
+    review_id SERIAL PRIMARY KEY,
+    account_id INTEGER REFERENCES account(account_id),
+    inv_id INTEGER REFERENCES inventory(inv_id),
+    review_comment TEXT,
+    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

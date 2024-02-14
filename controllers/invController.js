@@ -1,4 +1,5 @@
 const invModel = require("../models/inventory-model")
+const reviewModel = require("../models/reviewModel")
 const utilities = require("../utilities/")
 
 const invCont = {}
@@ -28,6 +29,7 @@ invCont.buildByInvId = async function (req, res, next) {
   const inv_id = req.params.invId
   const data = await invModel.getInventoryByInvId(inv_id)
   const block = await utilities.buildSingleInventoryBlock(data)
+  const reviews = await reviewModel.getReviewByInvId(inv_id)
   let nav = await utilities.getNav()
   const className = data[0].inv_year +" "+ data[0].inv_make +" "+ data[0].inv_model
   res.render("./inventory/vehicle", {
@@ -35,6 +37,8 @@ invCont.buildByInvId = async function (req, res, next) {
     nav,
     errors: null,
     block,
+    reviews,
+    inv_id
   })
 }
 
@@ -294,6 +298,7 @@ invCont.deleteInventory = async function(req, res, next){
     })
   }
 }
+
 
 
 module.exports = invCont

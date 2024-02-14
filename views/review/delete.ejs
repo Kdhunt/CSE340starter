@@ -1,0 +1,43 @@
+<% if (title) { %>
+    <h1><%= title %></h1>
+    <% } else {
+      res.redirect('/')
+    } %>
+
+    <%- messages() %>
+    <% if (errors) { %>
+      <ul class="notice">
+     <% errors.array().forEach(error => { %>
+       <li><%= error.msg %></li>
+    <%  }) %>
+     </ul>
+    <% } %>
+
+    <div id="reviewUpdate">
+      <form action="/review/delete" method="post">
+        <div class="form-wrapper">
+          <div class="form-header">
+            <h2>Delete Review</h2>
+            
+          </div>
+          <div class="form-content">
+
+            <div class="form-element">
+              <label>
+                  <span>Comment:</span>
+                  <input aria-label="Comment" type="text" disabled readonly aria-readonly="true" name="review_comment" required aria-required="true" value="<%= locals.review_comment %>" >
+              </label>
+            </div>
+
+            <div class="form-submit">
+                <input id="submitButton" type="submit" name="submit" value="Confirm Delete">
+            </div>
+          </div>
+          <div class="form-footer">
+            <input type="hidden" name="review_id"
+            <% if(locals.review_id) { %> value="<%= locals.review_id %>"
+            <% } %>>
+          </div>
+        </div>
+        </form>
+      </div>

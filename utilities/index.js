@@ -221,4 +221,18 @@ Util.checkJWTToken = (req, res, next) => {
     }
    }
 
+   //format timestamp
+  Util.formatTimestamp = (timestamp) => {
+    const options = {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric',
+        hour12: true
+    };
+    return new Date(timestamp).toLocaleDateString('en-US', options);
+}
+
 module.exports = Util

@@ -7,3 +7,41 @@
     <%# messages() %>
 
     <%- block %>
+    
+    <section id="review block">
+      
+        <h2>Customer Reviews:</h2>
+    <% if (reviews && reviews.length > 0) { %>
+        <% reviews.forEach(function(review) { %>
+          <div>
+            <h3><%- review.username %> reviewed this vehicle on <%- review.formatted_timestamp %></h3>
+            <p><%- review.review_comment %></p>
+            <hr>
+          </div>
+        <% }) %>
+    <% } else { %>
+        <div>Be the first to leave a review.</div>
+    <% } %>
+    </section>
+
+    <div id="tools">
+      <h3>Leave a Review: </h3>
+      <% if (locals.loggedin) { %>
+        <form method="post" action="/review/add">
+          <div class="form-element">
+            <label>
+                <span>Comment:</span><span class="required">*</span>
+                <input aria-label="Comment" type="text" name="review_comment" required aria-required="true" value="<%- locals.review_comment %>" >
+            </label>
+          </div>
+          <div class="form-submit">
+            <input id="submitButton" type="submit" name="submit" value="Submit">
+        </div>
+          <input type="hidden" name="inv_id" value="<%- locals.inv_id %>" >
+          <input type="hidden" name="account_id" value="<%- locals.accountData.account_id %>" >
+        </form>
+      <% } else { %>
+        <a title="Click to log in" href="/account/login">You must be logged in to leave a review.</a>
+        
+      <% } %>
+    </div>

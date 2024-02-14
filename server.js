@@ -13,6 +13,7 @@ const static = require("./routes/static")
 const baseController = require("./controllers/baseController")
 const inventoryRoute = require("./routes/inventoryRoute")
 const accountRoute = require("./routes/accountRoute")
+const reviewRoute = require("./routes/reviewRoute")
 const errorRoute = require("./routes/errorRoute")
 const utilities = require("./utilities/")
 const session = require("express-session")
@@ -48,6 +49,15 @@ app.use(cookieParser())
 app.use(utilities.checkJWTToken)
 
 
+app.use(function(req, res, next) {
+  // Store the referring page URL in session if it's not the login page
+  if (req.url !== '/account/login' && req.url !== '/logout' && !req.url.includes('.')) {
+      req.session.returnTo = req.url;
+  }
+  next();
+});
+
+
 
 /* ***********************
  * View Engine and Templates
@@ -69,6 +79,7 @@ app.use(static)
 app.get("/", utilities.handleErrors(baseController.buildHome))
 app.use("/inv", utilities.handleErrors(inventoryRoute))
 app.use("/account", utilities.handleErrors(accountRoute))
+app.use("/review", utilities.handleErrors(reviewRoute))
 app.use("/borkened", utilities.handleErrors(errorRoute))
 app.use('/logout', (req, res)=>{ 
   //req.flash("Please log in")

@@ -15,6 +15,7 @@ router.get("/getInventory/:classification_id", utilities.handleErrors(invControl
 router.get("/edit/:invId", utilities.checkLogin, utilities.checkAccountType, utilities.handleErrors(invController.buildEditInventory))
 router.get("/delete/:invId", utilities.checkLogin, utilities.checkAccountType, utilities.handleErrors(invController.buildDeleteInventory))
 
+
 router.post(
     "/addClassification",
     invValidate.addClassificationRules(),
@@ -46,6 +47,8 @@ router.post(
     utilities.checkAccountType,
     utilities.handleErrors(invController.deleteInventory)
 )
+
+
 
 
 

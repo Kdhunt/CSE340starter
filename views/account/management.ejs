@@ -4,47 +4,53 @@
     res.redirect('/')
   } %>
 
-  <%# messages() %>
+  <%- messages() %>
 
   <section>
     
     <% if ((locals.loggedin) ) { %>
       <h2>Welcome, <%- locals.accountData.account_firstname %></h2>
-      <p><a href="/account/update/<%- locals.accountData.account_id %>" title="manage inventory">Manage Account</a></p> 
+      <p><a href="/account/update/<%- locals.accountData.account_id %>" title="manage Account">Manage Account</a></p> 
     <% } 
-    if (locals.account_type == 'Employee' || locals.account_type == 'Admin'){ %>
+    if (locals.accountData.account_type == 'Employee' || locals.accountData.account_type == 'Admin'){ %>
       <h3>Manage Inventory</h3>
       <p><a href="/inv/" title="manage inventory">Manage Inventory</a></p> 
       
       
     <% } %>
-
-   <!-- <h2>Manage Accounts</h2>
-      <div><a href="/inv/addAccount">Add an Account</a></div>
+    <% if(locals.loggedin ){ %>
+      <% if (reviews && reviews.length > 0) { %>
+    <h2>Manage Reviews</h2>
       <table>
         <thead>
           <tr>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Email</th>
-            <th>Actions</th>
+            <th>Inventory:</th>
+            <th>Comment:</th>
+            <th>Date Posted</th>
+            <th></th>
+            
           </tr>
         </thead>
         <tbody>
-
-          <tr>
-            <td><%# account_firstname %></td>
-            <td><%# account_lastname %></td>
-            <td><%# account_email %></td>
+          
+    <% reviews.forEach(function(review) { %>
+      <tr>
+            <td><%- review.title %></td>
+            <td><%- review.review_comment %></td>
+            <td><%- review.formatted_timestamp %></td>
             <td>
-              <a href='/account/edit/<%# account_id  %>' >Update</a>
-              <a href='/account/delete/<%# account_id  %>' >Delete</a>
+              <a href='/review/update/<%- review.review_id  %>' >Update</a>
+              <a href='/review/delete/<%- review.review_id  %>' >Delete</a>
             </td>
           </tr>
+    <% }) %>
         </tbody>
       </table>
+    <% } else { %>
+      <div>No items found.</div>
+    <% } %>
       
       <noscript>JavaScript must be enabled to use this page.</noscript>
   </section>
   <script src="../../js/account.js"></script>
--->
+<% } %>
